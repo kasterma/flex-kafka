@@ -1,0 +1,31 @@
+#cloud-config
+
+hostname: coreos0
+
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOZPEDKnH9N53p6P35CIKtp8JNkaRCndGgDlF7sI991Eq8XdBQMG9BIqjAnD3QwlbvFntn2szx/nprbQ/Vx9wcpYKS9EQg5tWK06T44HmxO7pH73JPpxZhpyiCAAwWm7Kxb8KHHpN6FW/ulgF+Gaai8MwlIogp34ih+WlDUfIKaUfuEQ1jVVz4aaPoG4LF+QMt0S73t70+6LEmG0hkBh+WPXqHDvuKaXrX4n4HgH3uTpczD9HJxbDvxjVK9XJTNbl40Ud09DqcHeJXBMLPLbUzGzg2KRpz7Fho/xeR8cqo1D/6tJiawQ+q/UCYzX9Yo6T0SSNac/PSl/lXpcTThhXz kasterma@kasterma.net
+
+users:
+  - name: kasterma
+    groups:
+     - sudo
+     - docker
+    ssh-authorized-keys:
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOZPEDKnH9N53p6P35CIKtp8JNkaRCndGgDlF7sI991Eq8XdBQMG9BIqjAnD3QwlbvFntn2szx/nprbQ/Vx9wcpYKS9EQg5tWK06T44HmxO7pH73JPpxZhpyiCAAwWm7Kxb8KHHpN6FW/ulgF+Gaai8MwlIogp34ih+WlDUfIKaUfuEQ1jVVz4aaPoG4LF+QMt0S73t70+6LEmG0hkBh+WPXqHDvuKaXrX4n4HgH3uTpczD9HJxbDvxjVK9XJTNbl40Ud09DqcHeJXBMLPLbUzGzg2KRpz7Fho/xeR8cqo1D/6tJiawQ+q/UCYzX9Yo6T0SSNac/PSl/lXpcTThhXz kasterma@kasterma.net
+  - name: vagrant
+    groups:
+      - sudo
+    passwd: $1$TPGlxBBl$gtw4bFNO/Im2ym8rEeC3V/
+  - name: root
+    passwd: $1$TPGlxBBl$gtw4bFNO/Im2ym8rEeC3V/
+
+coreos:
+  units:
+    - name: etcd2.service
+      command: start
+    - name: fleet.service
+      command: start
+  etcd2:
+    # generate a new token for each unique cluster from https://discovery.etcd.io/new?size=3
+    # specify the initial size of your cluster with ?size=X
+    discovery: https://discovery.etcd.io/37736525c604a3708f1a6b5058be59e2
